@@ -1,0 +1,9 @@
+/vendor/
+coverage
+.php_cs.cache
+.phpunit.result.cache
+
+.php-version
+.DS_Stores
+.AppleDouble
+Thumbs_db
