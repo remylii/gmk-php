@@ -1,8 +1,17 @@
 <?php
 namespace Gmk;
 
+use Gmk\Board;
+
 class GameManager
 {
+    private $board;
+
+    public function __construct()
+    {
+        $this->board = new Board(10);
+    }
+
     public function start()
     {
         /** 登場人物を整理させる */
@@ -11,7 +20,7 @@ class GameManager
         /** ゲームのシナリオを整理させる */
         while (true) {
             // 1. ボード表示
-            echo "現在の盤面を表示して\n";
+            $this->board->show();
 
             // 2. 色ぬり
             echo "このターンのプレイヤーが石を置く\n";
