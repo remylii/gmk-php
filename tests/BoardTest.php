@@ -1,5 +1,5 @@
 <?php
-namespace Tests;
+namespace Test;
 
 use PHPUnit\Framework\TestCase;
 use Gmk\Board;
@@ -48,7 +48,6 @@ class BoardTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
         $board = new Board($range);
         $board->put('○', $x, $y);
-
     }
 
     public function putOutRangeProvider(): array
@@ -60,5 +59,4 @@ class BoardTest extends TestCase
             [0, 0, 0]
         ];
     }
-
 }

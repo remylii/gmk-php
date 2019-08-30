@@ -26,7 +26,7 @@ class GameManager
 
                 // 2. 色ぬり
                 echo "座標を「x,y」の形で入力してください..." . PHP_EOL;
-                while(true) {
+                while (true) {
                     try {
                         $stdin = trim(fgets(STDIN));
                         list($x, $y) = $this->parseArgsXY($stdin);
