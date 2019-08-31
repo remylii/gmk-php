@@ -25,7 +25,7 @@ class GameManager
                 $this->board->show();
 
                 // 2. 色ぬり
-                echo "座標を「x,y」の形で入力してください..." . PHP_EOL;
+                echo "座標を「x,y」の形で入力してください...  ";
                 while (true) {
                     try {
                         $stdin = trim(fgets(STDIN));
@@ -40,6 +40,11 @@ class GameManager
                 }
 
                 // 3. 勝敗判定
+                if ($this->judgement($stone)) {
+                    echo $stone . "の勝利" . PHP_EOL;
+                    $this->board->show();
+                    exit(0);
+                }
 
                 // 4. 相手のターン
             }
@@ -54,5 +59,44 @@ class GameManager
         }
 
         return [$res[1], $res[2]];
+    }
+
+    private function judgement($stone): bool
+    {
+        $win_count = 2;
+        $win_flag = false;
+        $arr = $this->board->getData();
+
+        foreach ($arr as $line_idx => $line) {
+            if (array_search($stone, $line, true) === false) {
+                continue;
+            }
+
+            $line_same = 0;
+            foreach ($line as $idx => $cell) {
+                if ($cell !== $stone) {
+                    $line_same = 0;
+                    continue;
+                }
+
+                $line_same++;
+
+                // 縦
+                $row_flag = true;
+                for ($i = 1; $i < $win_count; $i++) {
+                    if ($arr[($line_idx + $i)][$idx] !== $stone) {
+                        $row_flag = false;
+                        break;
+                    }
+                }
+
+                if ($line_same >= $win_count || $row_flag === true) {
+                    $win_flag = true;
+                    break 2;
+                }
+            }
+        }
+
+        return $win_flag;
     }
 }

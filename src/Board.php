@@ -14,6 +14,11 @@ class Board
         }
     }
 
+    public function getData()
+    {
+        return $this->data;
+    }
+
     public function show()
     {
         foreach ($this->data as $line) {
