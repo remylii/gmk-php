@@ -33,7 +33,8 @@
     },
     "autoload": {
         "psr-4": {
-            "Gmk\\": "src/"
+            "Gmk\\": "src/",
+            "Gmk\\Libs\\": "src/libs"
         }
     },
     "autoload-dev": {
