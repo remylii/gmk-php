@@ -35,7 +35,7 @@ trait GameRulerTrait
                 // 縦
                 $row_flag = true;
                 for ($i = 1; $i < $win_count; $i++) {
-                    if (!isset($arr[($line_idx + 1)])) {
+                    if (!isset($arr[($line_idx + $i)])) {
                         $row_flag = false;
                         break;
                     }
@@ -46,7 +46,35 @@ trait GameRulerTrait
                     }
                 }
 
-                if ($line_same >= $win_count || $row_flag === true) {
+                // 右斜め
+                $slash_flag = true;
+                for ($i = 1; $i < $win_count; $i++) {
+                    if (!isset($arr[($line_idx + $i)]) || !isset($arr[$line_idx + $i][($idx + $i)])) {
+                        $slash_flag = false;
+                        break;
+                    }
+
+                    if ($arr[($line_idx + $i)][($idx + $i)] !== $stone) {
+                        $slash_flag = false;
+                        break;
+                    }
+                }
+
+                // 左斜め
+                $left_slash_flag = true;
+                for ($i = 1; $i < $win_count; $i++) {
+                    if (!isset($arr[($line_idx + $i)]) || !isset($arr[($line_idx + $i)][($idx - $i)]) ) {
+                        $left_slash_flag = false;
+                        break;
+                    }
+
+                    if ($arr[($line_idx + $i)][($idx - $i)] !== $stone) {
+                        $left_slash_flag = false;
+                        break;
+                    }
+                }
+
+                if ($line_same >= $win_count || $row_flag === true || $slash_flag === true || $left_slash_flag === true) {
                     $win_flag = true;
                     break 2;
                 }
