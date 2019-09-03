@@ -15,7 +15,7 @@ trait GameRulerTrait
 
     public function judgement($stone, $arr): bool
     {
-        $win_count = 2;
+        $win_count = 5;
         $win_flag = false;
 
         foreach ($arr as $line_idx => $line) {
@@ -35,6 +35,11 @@ trait GameRulerTrait
                 // 縦
                 $row_flag = true;
                 for ($i = 1; $i < $win_count; $i++) {
+                    if (!isset($arr[($line_idx + 1)])) {
+                        $row_flag = false;
+                        break;
+                    }
+
                     if ($arr[($line_idx + $i)][$idx] !== $stone) {
                         $row_flag = false;
                         break;

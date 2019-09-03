@@ -3,6 +3,7 @@
 namespace Test;
 
 use PHPUnit\Framework\TestCase;
+use Gmk\Board;
 
 class GameRulerTraitTest extends TestCase
 {
@@ -57,9 +58,50 @@ class GameRulerTraitTest extends TestCase
     }
 
 
-
-    public function judgement()
+    /**
+     * @dataProvider judgementProvider
+     */
+    public function testJudgementLine($expected, $max_cell, $params)
     {
+        $stone = 'x';
+        $board = new Board($max_cell);
+        foreach ($params as $val) {
+            $board->put($stone, $val[0], $val[1]);
+        }
 
+        $res = $this->ruler->judgement($stone, $board->getData());
+        $this->assertEquals($expected, $res);
+    }
+
+    public function judgementProvider(): array
+    {
+        return [
+            "横勝ち" => [
+                true, 10, [
+                    [1, 1],
+                    [1, 2],
+                    [1, 3],
+                    [1, 4],
+                    [1, 5],
+                ]
+            ],
+            "縦勝ち" => [
+                true, 10, [
+                    [1, 0],
+                    [2, 0],
+                    [3, 0],
+                    [4, 0],
+                    [5, 0],
+                ]
+            ],
+            "まだ勝敗つかない" => [
+                false, 10, [
+                    [9, 0],
+                    [9, 1],
+                    [9, 2],
+                    [9, 3],
+                ]
+            ],
+        ];
     }
 }
