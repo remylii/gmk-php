@@ -4,6 +4,11 @@ namespace Gmk\Libs;
 
 trait GameRulerTrait
 {
+    public function announce(string $text): void
+    {
+        echo $text;
+    }
+
     public function parseArgsXY(string $str)
     {
         if (!preg_match("/^(\d+),(\d+)$/", $str, $res)) {
@@ -63,7 +68,7 @@ trait GameRulerTrait
                 // 左斜め
                 $left_slash_flag = true;
                 for ($i = 1; $i < $win_count; $i++) {
-                    if (!isset($arr[($line_idx + $i)]) || !isset($arr[($line_idx + $i)][($idx - $i)]) ) {
+                    if (!isset($arr[($line_idx + $i)]) || !isset($arr[($line_idx + $i)][($idx - $i)])) {
                         $left_slash_flag = false;
                         break;
                     }

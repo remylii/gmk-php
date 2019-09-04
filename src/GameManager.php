@@ -2,38 +2,47 @@
 namespace Gmk;
 
 use Gmk\Board;
+use Gmk\Player;
 use Gmk\Libs\GameRulerInterface;
 
 class GameManager implements GameRulerInterface
 {
     use Libs\GameRulerTrait;
 
+    const BLACK_STONE = '●';
+    const WHITE_STONE = '○';
+
+    /** @var Board */
     private $board;
+
+    /** @var array <Player> */
+    private $players;
 
     public function __construct()
     {
         $this->board = new Board(10);
+        $this->players = [
+            new Player('Player A', self::BLACK_STONE),
+            new Player('Player B', self::WHITE_STONE)
+        ];
     }
 
     public function start()
     {
-        /** 登場人物を整理させる */
-
-        /** ゲームのシナリオを整理させる */
-        $stones = ["●", "○"];
         while (true) {
-            foreach ($stones as $stone) {
-                echo $stone . "のターン" . PHP_EOL;
-                // 1. ボード表示
+            foreach ($this->players as $player) {
                 $this->board->show();
 
-                // 2. 色ぬり
-                echo "座標を「x,y」の形で入力してください...  ";
+                $this->announce(
+                    $player->getName() . "のターン". PHP_EOL
+                    . "座標を「x,y」で入力してください... "
+                );
+
                 while (true) {
                     try {
                         $stdin = trim(fgets(STDIN));
                         list($x, $y) = $this->parseArgsXY($stdin);
-                        $this->board->put($stone, $x, $y);
+                        $this->board->put($player->getStone(), $x, $y);
                     } catch (\InvalidArgumentException | \LogicException $e) {
                         echo $e->getMessage() . PHP_EOL;
                         continue;
@@ -42,16 +51,12 @@ class GameManager implements GameRulerInterface
                     break 1;
                 }
 
-                // 3. 勝敗判定
-                if ($this->judgement($stone, $this->board->getData())) {
-                    echo $stone . "の勝利" . PHP_EOL;
+                if ($this->judgement($player->getStone(), $this->board->getData())) {
+                    $this->announce($player->getName() . 'の勝利!' . PHP_EOL);
                     $this->board->show();
                     exit(0);
                 }
-
-                // 4. 相手のターン
             }
-            // 5. 繰り返し
         }
     }
 }
