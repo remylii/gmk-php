@@ -14,7 +14,7 @@ class PlayerTest extends TestCase
         $player = new Player($name, "x");
 
         $expected = trim($name);
-        $this->assertEquals($expected, $player->getName());
+        $this->assertSame($expected, $player->getName());
     }
 
     public function getNameProvider(): array
@@ -42,7 +42,7 @@ class PlayerTest extends TestCase
         $player = new Player('player', $stone);
 
         $expected = trim($stone);
-        $this->assertEquals($expected, $player->getStone());
+        $this->assertSame($expected, $player->getStone());
     }
 
     public function constructorExceptionProvider(): array

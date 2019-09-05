@@ -15,7 +15,7 @@ trait GameRulerTrait
             throw new \InvalidArgumentException('入力の形が違う');
         }
 
-        return [$res[1], $res[2]];
+        return [(int)$res[1], (int)$res[2]];
     }
 
     public function judgement($stone, $arr): bool

@@ -23,7 +23,7 @@ class GameRulerTraitTest extends TestCase
         $this->ruler->announce('アメンボ赤いなabcde12345');
         $output_contents = ob_get_clean();
 
-        $this->assertEquals($expect, $output_contents);
+        $this->assertSame($expect, $output_contents);
     }
 
     /**
@@ -33,8 +33,8 @@ class GameRulerTraitTest extends TestCase
     {
         list($x, $y) = $this->ruler->parseArgsXY($arg);
 
-        $this->assertEquals($expected_x, $x);
-        $this->assertEquals($expected_y, $y);
+        $this->assertSame($expected_x, $x);
+        $this->assertSame($expected_y, $y);
     }
 
     public function parseArgsXYProvider(): array
@@ -80,7 +80,7 @@ class GameRulerTraitTest extends TestCase
         }
 
         $res = $this->ruler->judgement($stone, $board->getData());
-        $this->assertEquals($expected, $res);
+        $this->assertSame($expected, $res);
     }
 
     public function judgementProvider(): array

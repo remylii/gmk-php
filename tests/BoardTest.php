@@ -17,7 +17,7 @@ class BoardTest extends TestCase
         }
 
         foreach ($data as $line) {
-            $this->assertEquals($range, count($line));
+            $this->assertSame($range, count($line));
             $values = array_count_values($line);
 
             if (count($values) > 1) {
@@ -53,8 +53,8 @@ class BoardTest extends TestCase
 
         $str_count = mb_substr_count($output_contents, '|');
         $line_feed_code_count = mb_substr_count($output_contents, "\n");
-        $this->assertEquals(30, $str_count);
-        $this->assertEquals(5, $line_feed_code_count);
+        $this->assertSame(30, $str_count);
+        $this->assertSame(5, $line_feed_code_count);
     }
 
     public function testPut()
