@@ -9,6 +9,7 @@ class GameManager implements GameRulerInterface
 {
     use Libs\GameRulerTrait;
 
+    const BOARD_RANGE = 10;
     const BLACK_STONE = '●';
     const WHITE_STONE = '○';
 
@@ -20,7 +21,7 @@ class GameManager implements GameRulerInterface
 
     public function __construct()
     {
-        $this->board = new Board(10);
+        $this->board = new Board(self::BOARD_RANGE);
         $this->players = [
             new Player('Player A', self::BLACK_STONE),
             new Player('Player B', self::WHITE_STONE)

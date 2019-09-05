@@ -6,6 +6,43 @@ use Gmk\Board;
 
 class BoardTest extends TestCase
 {
+    public function testConstruct()
+    {
+        $range = 10;
+        $board = new Board($range);
+
+        $data = $board->getData();
+        if (count($data) !== $range) {
+            $this->fail();
+        }
+
+        foreach ($data as $line) {
+            $this->assertEquals($range, count($line));
+            $values = array_count_values($line);
+
+            if (count($values) > 1) {
+                $this->fail();
+            }
+        }
+    }
+
+    /**
+     * @dataProvider constructExceptionProvider
+     */
+    public function testConstructException($expected_exception, $arg)
+    {
+        $this->expectException($expected_exception);
+
+        $board = new Board($arg);
+    }
+
+    public function constructExceptionProvider(): array
+    {
+        return [
+            [\InvalidArgumentException::class, -1],
+        ];
+    }
+
     public function testShow()
     {
         $board = new Board(5);

@@ -3,14 +3,21 @@ namespace Gmk;
 
 class Board
 {
+    const INIT_CELL = '';
+
     private $data;
 
     public function __construct(int $n)
     {
-        for ($i = 0; $i < $n; $i++) {
-            for ($j = 0; $j < $n; $j++) {
-                $this->data[$i][$j] = '';
+        try {
+            if ($n < 0) {
+                throw new \InvalidArgumentException();
             }
+
+            $line = array_fill(0, $n, self::INIT_CELL);
+            $this->data = array_fill(0, $n, $line);
+        } catch (\Throwable $e) {
+            throw $e;
         }
     }
 
@@ -24,7 +31,7 @@ class Board
         foreach ($this->data as $line) {
             echo "|";
             foreach ($line as $cell) {
-                echo ($cell !== '') ? $cell : " ";
+                echo ($cell !== self::INIT_CELL) ? $cell : " ";
                 echo "|";
             }
             echo PHP_EOL;
@@ -37,7 +44,7 @@ class Board
             throw new \InvalidArgumentException('座標軸が存在しない');
         }
 
-        if ($this->data[$x][$y] !== '') {
+        if ($this->data[$x][$y] !== self::INIT_CELL) {
             throw new \LogicException('すでに置いてある');
         }
 
