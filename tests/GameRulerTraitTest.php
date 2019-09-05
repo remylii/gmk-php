@@ -16,6 +16,16 @@ class GameRulerTraitTest extends TestCase
         };
     }
 
+    public function testAnnounce()
+    {
+        $expect = 'アメンボ赤いなabcde12345';
+        ob_start();
+        $this->ruler->announce('アメンボ赤いなabcde12345');
+        $output_contents = ob_get_clean();
+
+        $this->assertEquals($expect, $output_contents);
+    }
+
     /**
      * @dataProvider parseArgsXYProvider
      */
