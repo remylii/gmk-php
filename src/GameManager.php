@@ -28,7 +28,7 @@ class GameManager implements GameRulerInterface
         ];
     }
 
-    public function start()
+    public function start(): bool
     {
         while (true) {
             foreach ($this->players as $player) {
@@ -55,9 +55,11 @@ class GameManager implements GameRulerInterface
                 if ($this->judgement($player->getStone(), $this->board->getData())) {
                     $this->announce($player->getName() . 'の勝利!' . PHP_EOL);
                     $this->board->show();
-                    exit(0);
+                    break 2;
                 }
             }
         }
+
+        return true;
     }
 }
