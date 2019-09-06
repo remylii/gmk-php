@@ -12,18 +12,10 @@ class BoardTest extends TestCase
         $board = new Board($range);
 
         $data = $board->getData();
-        if (count($data) !== $range) {
-            $this->fail();
-        }
+        $this->assertSame($range ** 2, count($data));
 
-        foreach ($data as $line) {
-            $this->assertSame($range, count($line));
-            $values = array_count_values($line);
-
-            if (count($values) > 1) {
-                $this->fail();
-            }
-        }
+        $values = array_count_values($data);
+        $this->assertSame(1, count($values));
     }
 
     /**

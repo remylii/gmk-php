@@ -5,6 +5,10 @@ class Board
 {
     const INIT_CELL = '';
 
+    /** @var int */
+    private $line_length;
+
+    /** @var array */
     private $data;
 
     public function __construct(int $n)
@@ -14,8 +18,8 @@ class Board
                 throw new \InvalidArgumentException();
             }
 
-            $line = array_fill(0, $n, self::INIT_CELL);
-            $this->data = array_fill(0, $n, $line);
+            $this->line_length = $n;
+            $this->data = array_fill(0, $n ** 2, self::INIT_CELL);
         } catch (\Throwable $e) {
             throw $e;
         }
@@ -28,7 +32,8 @@ class Board
 
     public function show()
     {
-        foreach ($this->data as $line) {
+        $arr = array_chunk($this->data, $this->line_length);
+        foreach ($arr as $line) {
             echo "|";
             foreach ($line as $cell) {
                 echo ($cell !== self::INIT_CELL) ? $cell : " ";
@@ -38,17 +43,19 @@ class Board
         }
     }
 
-    public function put(string $p, int $x, int $y): bool
+    public function put(string $p, int $a, int $b): bool
     {
-        if (!isset($this->data[$x][$y])) {
+        $idx = $b + ($a * $this->line_length);
+
+        if (!isset($this->data[$idx])) {
             throw new \InvalidArgumentException('座標軸が存在しない');
         }
 
-        if ($this->data[$x][$y] !== self::INIT_CELL) {
+        if ($this->data[$idx] !== self::INIT_CELL) {
             throw new \LogicException('すでに置いてある');
         }
 
-        $this->data[$x][$y] = $p;
+        $this->data[$idx] = $p;
 
         return true;
     }

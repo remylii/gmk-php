@@ -15,18 +15,14 @@ trait GameRulerTrait
             throw new \InvalidArgumentException('入力の形が違う');
         }
 
-        return [(int)$res[1], (int)$res[2]];
+        return [(int)$res[2], (int)$res[1]];
     }
 
-    public function judgement($stone, $arr): bool
+    public function judgement($stone, $elements): bool
     {
         $range = self::BOARD_RANGE ** 2;
         $win_flag = false;
 
-        $elements = [];
-        array_walk_recursive($arr, function ($v) use (&$elements) {
-            $elements[] = $v;
-        });
         $values = array_count_values($elements);
 
         if (!isset($values[$stone]) || $values[$stone] < self::WIN_CONDITION_COUNT) {
