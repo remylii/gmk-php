@@ -9,7 +9,6 @@ class GameManager implements GameRulerInterface
 {
     use Libs\GameRulerTrait;
 
-    const BOARD_RANGE = 10;
     const BLACK_STONE = '●';
     const WHITE_STONE = '○';
 

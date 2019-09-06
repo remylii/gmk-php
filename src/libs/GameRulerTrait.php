@@ -20,66 +20,36 @@ trait GameRulerTrait
 
     public function judgement($stone, $arr): bool
     {
-        $win_count = 5;
+        $range = self::BOARD_RANGE ** 2;
         $win_flag = false;
 
-        foreach ($arr as $line_idx => $line) {
-            if (array_search($stone, $line, true) === false) {
+        $elements = [];
+        array_walk_recursive($arr, function ($v) use (&$elements) {
+            $elements[] = $v;
+        });
+        $values = array_count_values($elements);
+
+        if (!isset($values[$stone]) || $values[$stone] < self::WIN_CONDITION_COUNT) {
+            return false;
+        }
+
+        for ($i = 0; $i < ($range - self::WIN_CONDITION_COUNT); $i++) {
+            if ($elements[$i] !== $stone) {
                 continue;
             }
 
-            $line_same = 0;
-            foreach ($line as $idx => $cell) {
-                if ($cell !== $stone) {
-                    $line_same = 0;
-                    continue;
-                }
+            foreach (['row', 'raw', 'r_slash', 'l_slash'] as $type) {
+                $flag = true;
+                $ids = $this->getIds($type, $i);
 
-                $line_same++;
-
-                // 縦
-                $row_flag = true;
-                for ($i = 1; $i < $win_count; $i++) {
-                    if (!isset($arr[($line_idx + $i)])) {
-                        $row_flag = false;
-                        break;
-                    }
-
-                    if ($arr[($line_idx + $i)][$idx] !== $stone) {
-                        $row_flag = false;
+                foreach ($ids as $j) {
+                    if (isset($elements[$j]) && $elements[$j] !== $stone) {
+                        $flag = false;
                         break;
                     }
                 }
 
-                // 右斜め
-                $slash_flag = true;
-                for ($i = 1; $i < $win_count; $i++) {
-                    if (!isset($arr[($line_idx + $i)]) || !isset($arr[$line_idx + $i][($idx + $i)])) {
-                        $slash_flag = false;
-                        break;
-                    }
-
-                    if ($arr[($line_idx + $i)][($idx + $i)] !== $stone) {
-                        $slash_flag = false;
-                        break;
-                    }
-                }
-
-                // 左斜め
-                $left_slash_flag = true;
-                for ($i = 1; $i < $win_count; $i++) {
-                    if (!isset($arr[($line_idx + $i)]) || !isset($arr[($line_idx + $i)][($idx - $i)])) {
-                        $left_slash_flag = false;
-                        break;
-                    }
-
-                    if ($arr[($line_idx + $i)][($idx - $i)] !== $stone) {
-                        $left_slash_flag = false;
-                        break;
-                    }
-                }
-
-                if ($line_same >= $win_count || $row_flag === true || $slash_flag === true || $left_slash_flag === true) {
+                if ($flag === true) {
                     $win_flag = true;
                     break 2;
                 }
@@ -87,5 +57,33 @@ trait GameRulerTrait
         }
 
         return $win_flag;
+    }
+
+    private function getIds($type, $idx)
+    {
+        $length = 10;
+        switch ($type) {
+            case 'row':
+                $n = 1;
+                break;
+            case 'raw':
+                $n = $length;
+                break;
+            case 'r_slash':
+                $n = $length + 1;
+                break;
+            case 'l_slash':
+                $n = $length - 1;
+                break;
+            default:
+                $n = 0;
+                break;
+        }
+
+        $res = [$idx];
+        for ($i = 1; $i < self::WIN_CONDITION_COUNT; $i++) {
+            $res[] = $idx + ($i * $n);
+        }
+        return $res;
     }
 }

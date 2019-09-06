@@ -4,6 +4,7 @@ namespace Test;
 
 use PHPUnit\Framework\TestCase;
 use Gmk\Board;
+use Gmk\Libs\GameRulerInterface;
 
 class GameRulerTraitTest extends TestCase
 {
@@ -11,7 +12,7 @@ class GameRulerTraitTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->ruler = new class {
+        $this->ruler = new class implements GameRulerInterface {
             use \Gmk\Libs\GameRulerTrait;
         };
     }
