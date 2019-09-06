@@ -32,14 +32,12 @@ class GameManager implements GameRulerInterface
     {
         while (true) {
             foreach ($this->players as $player) {
+                $this->announce($player->getName() . "のターン". PHP_EOL);
                 $this->board->show();
 
-                $this->announce(
-                    $player->getName() . "のターン". PHP_EOL
-                    . "座標を「x,y」で入力してください... "
-                );
-
                 while (true) {
+                    $this->announce("座標を「x,y」で入力してください... ");
+
                     try {
                         $stdin = trim(fgets(STDIN));
                         list($x, $y) = $this->parseArgsXY($stdin);
@@ -47,6 +45,8 @@ class GameManager implements GameRulerInterface
                     } catch (\InvalidArgumentException | \LogicException $e) {
                         echo $e->getMessage() . PHP_EOL;
                         continue;
+                    } catch (\Throwable $e) {
+                        throw $e;
                     }
 
                     break 1;
