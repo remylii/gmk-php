@@ -157,4 +157,27 @@ class GameRulerTraitTest extends TestCase
             ],
         ];
     }
+
+    /**
+     * @dataProvider getIndexesProvider
+     */
+    public function testGetIndexes($expect_array, $type, $n)
+    {
+        $result = $this->ruler->getIndexes($type, $n);
+        $this->assertSame($expect_array, $result);
+    }
+
+    public function getIndexesProvider(): array
+    {
+        return [
+            [[4, 3, 2, 1, 0], "row", 0],
+            [[99, 98, 97, 96, 95], "row", 95],
+            [[40, 30, 20, 10, 0], "raw", 0],
+            [[99, 89, 79, 69, 59], "raw", 59],
+            [[44, 33, 22, 11, 0], "r_slash", 0],
+            [[99, 88, 77, 66, 55], "r_slash", 55],
+            [[40, 31, 22, 13, 4], "l_slash", 4],
+            [[95, 86, 77, 68, 59], "l_slash", 59]
+        ];
+    }
 }

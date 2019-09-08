@@ -39,8 +39,8 @@ class GameManager implements GameRulerInterface
 
                     try {
                         $stdin = trim(fgets(STDIN));
-                        list($x, $y) = $this->parseArgsXY($stdin);
-                        $this->board->put($player->getStone(), $x, $y);
+                        list($a, $b) = $this->parseArgsXY($stdin);
+                        $this->board->put($player->getStone(), $a, $b);
                     } catch (\InvalidArgumentException | \LogicException $e) {
                         echo $e->getMessage() . PHP_EOL;
                         continue;

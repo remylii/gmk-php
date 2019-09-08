@@ -36,7 +36,7 @@ trait GameRulerTrait
 
             foreach (['row', 'raw', 'r_slash', 'l_slash'] as $type) {
                 $flag = true;
-                $ids = $this->getIds($type, $i);
+                $ids = $this->getIndexes($type, $i);
 
                 foreach ($ids as $j) {
                     if (isset($elements[$j]) && $elements[$j] !== $stone) {
@@ -55,21 +55,20 @@ trait GameRulerTrait
         return $win_flag;
     }
 
-    private function getIds($type, $idx)
+    public function getIndexes($type, $idx)
     {
-        $length = 10;
         switch ($type) {
             case 'row':
                 $n = 1;
                 break;
             case 'raw':
-                $n = $length;
+                $n = self::BOARD_RANGE;
                 break;
             case 'r_slash':
-                $n = $length + 1;
+                $n = self::BOARD_RANGE + 1;
                 break;
             case 'l_slash':
-                $n = $length - 1;
+                $n = self::BOARD_RANGE - 1;
                 break;
             default:
                 $n = 0;
@@ -80,6 +79,6 @@ trait GameRulerTrait
         for ($i = 1; $i < self::WIN_CONDITION_COUNT; $i++) {
             $res[] = $idx + ($i * $n);
         }
-        return $res;
+        return array_reverse($res);
     }
 }
