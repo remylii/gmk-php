@@ -12,4 +12,12 @@ interface GameRulerInterface
     public function parseArgsXY(string $str);
 
     public function judgement(string $stone, array $arr): bool;
+
+    public function getRowIndexes(int $idx): array;
+
+    public function getColIndexes(int $idx): array;
+
+    public function getRightDiagonalIndexes(int $idx): array;
+
+    public function getLeftDiagonalIndexes(int $idx): array;
 }

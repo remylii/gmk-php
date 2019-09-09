@@ -34,11 +34,25 @@ trait GameRulerTrait
                 continue;
             }
 
-            foreach (['row', 'raw', 'r_slash', 'l_slash'] as $type) {
+            foreach (['row', 'col', 'r_diagonal', 'l_diagonal'] as $type) {
                 $flag = true;
-                $ids = $this->getIndexes($type, $i);
+                $indexes = [];
+                switch ($type) {
+                    case "row":
+                        $indexes = $this->getRowIndexes($i);
+                        break;
+                    case "col":
+                        $indexes = $this->getColIndexes($i);
+                        break;
+                    case "r_diagonal":
+                        $indexes = $this->getRightDiagonalIndexes($i);
+                        break;
+                    case "l_diagonal":
+                        $indexes = $this->getLeftDiagonalIndexes($i);
+                        break;
+                }
 
-                foreach ($ids as $j) {
+                foreach ($indexes as $j) {
                     if (isset($elements[$j]) && $elements[$j] !== $stone) {
                         $flag = false;
                         break;
@@ -55,30 +69,37 @@ trait GameRulerTrait
         return $win_flag;
     }
 
-    public function getIndexes($type, $idx)
+    public function getRowIndexes(int $idx): array
     {
-        switch ($type) {
-            case 'row':
-                $n = 1;
-                break;
-            case 'raw':
-                $n = self::BOARD_RANGE;
-                break;
-            case 'r_slash':
-                $n = self::BOARD_RANGE + 1;
-                break;
-            case 'l_slash':
-                $n = self::BOARD_RANGE - 1;
-                break;
-            default:
-                $n = 0;
-                break;
-        }
+        $n = 1;
+        return $this->getIndexes($idx, $n);
+    }
 
+    public function getColIndexes(int $idx): array
+    {
+        $n = self::BOARD_RANGE;
+        return $this->getIndexes($idx, $n);
+    }
+
+    public function getRightDiagonalIndexes(int $idx): array
+    {
+        $n = self::BOARD_RANGE + 1;
+        return $this->getIndexes($idx, $n);
+    }
+
+    public function getLeftDiagonalIndexes(int $idx): array
+    {
+        $n = self::BOARD_RANGE - 1;
+        return $this->getIndexes($idx, $n);
+    }
+
+    private function getIndexes(int $idx, int $n): array
+    {
         $res = [$idx];
         for ($i = 1; $i < self::WIN_CONDITION_COUNT; $i++) {
-            $res[] = $idx + ($i * $n);
+            array_push($res, $idx + ($i * $n));
         }
+
         return array_reverse($res);
     }
 }

@@ -159,25 +159,70 @@ class GameRulerTraitTest extends TestCase
     }
 
     /**
-     * @dataProvider getIndexesProvider
+     * @dataProvider getRowIndexesProvider
      */
-    public function testGetIndexes($expect_array, $type, $n)
+    public function testGetRowIndexes($expect_array, $n)
     {
-        $result = $this->ruler->getIndexes($type, $n);
+        $result = $this->ruler->getRowIndexes($n);
         $this->assertSame($expect_array, $result);
     }
 
-    public function getIndexesProvider(): array
+    public function getRowIndexesProvider(): array
     {
         return [
-            [[4, 3, 2, 1, 0], "row", 0],
-            [[99, 98, 97, 96, 95], "row", 95],
-            [[40, 30, 20, 10, 0], "raw", 0],
-            [[99, 89, 79, 69, 59], "raw", 59],
-            [[44, 33, 22, 11, 0], "r_slash", 0],
-            [[99, 88, 77, 66, 55], "r_slash", 55],
-            [[40, 31, 22, 13, 4], "l_slash", 4],
-            [[95, 86, 77, 68, 59], "l_slash", 59]
+            [[4, 3, 2, 1, 0], 0],
+            [[99, 98, 97, 96, 95], 95],
+        ];
+    }
+
+    /**
+     * @dataProvider getColIndexesProvider
+     */
+    public function testGetColIndexes($expect_array, $n)
+    {
+        $result = $this->ruler->getColIndexes($n);
+        $this->assertSame($expect_array, $result);
+    }
+
+    public function getColIndexesProvider(): array
+    {
+        return [
+            [[40, 30, 20, 10, 0], 0],
+            [[99, 89, 79, 69, 59], 59],
+        ];
+    }
+
+    /**
+     * @dataProvider getRightDiagonalIndexesProvider
+     */
+    public function getRightDiagonalIndexes($expect_array, $n)
+    {
+        $result = $this->ruler->getRightDiagonalIndexes($n);
+        $this->assertSame($expect_array, $result);
+    }
+
+    public function getRightDiagonalIndexesProvider(): array
+    {
+        return [
+            [[44, 33, 22, 11, 0], 0],
+            [[99, 88, 77, 66, 55], 55],
+        ];
+    }
+
+    /**
+     * @dataProvider getLeftDiagonalIndexesProvider
+     */
+    public function testGetLeftDiagonalIndexes($expect_array, $n)
+    {
+        $result = $this->ruler->getLeftDiagonalIndexes($n);
+        $this->assertSame($expect_array, $result);
+    }
+
+    public function getLeftDiagonalIndexesProvider(): array
+    {
+        return [
+            [[40, 31, 22, 13, 4], 4],
+            [[95, 86, 77, 68, 59], 59]
         ];
     }
 }
