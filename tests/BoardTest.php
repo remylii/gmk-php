@@ -82,8 +82,8 @@ class BoardTest extends TestCase
     public function putOutRangeProvider(): array
     {
         return [
-            [1, 2, 1],
-            [1, 1, 2],
+            [10, 10, 9],
+            [10, 9, 10],
             [1, 2, 2],
             [0, 0, 0]
         ];

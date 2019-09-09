@@ -47,7 +47,7 @@ class Board
     {
         $idx = $b + ($a * $this->line_length);
 
-        if (!isset($this->data[$idx])) {
+        if ($a >= $this->line_length || $b >= $this->line_length) {
             throw new \InvalidArgumentException('座標軸が存在しない');
         }
 
