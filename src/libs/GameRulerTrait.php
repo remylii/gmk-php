@@ -18,6 +18,71 @@ trait GameRulerTrait
         return [(int)$res[2], (int)$res[1]];
     }
 
+    public function judge(int $idx, array $elements): bool
+    {
+        $indexes = [
+            self::BOARD_RANGE + 1,
+            self::BOARD_RANGE,
+            self::BOARD_RANGE - 1,
+            1
+        ];
+
+        if (!isset($elements[$idx])) {
+            return false;
+        }
+        $s = $elements[$idx];
+        $idx_n = (int)substr($idx, -1); // 一桁目
+
+        foreach ($indexes as $index) {
+            $round = 0;
+            $same_count = 1;
+            while ($round < 2) {
+                $base = ($round === 0) ? $index : -($index);
+
+                if ($idx_n === self::BOARD_RANGE - 1) {
+                    if ($base === -(self::BOARD_RANGE - 1) || $base === 1 || $base === self::BOARD_RANGE + 1) {
+                        $round++;
+                        continue;
+                    }
+                } elseif (($idx%self::BOARD_RANGE) === 0) {
+                    if ($base === -(self::BOARD_RANGE + 1) || $base === -1 || $base === self::BOARD_RANGE - 1) {
+                        $round++;
+                        continue;
+                    }
+                }
+
+                for ($i = 1; $i < self::WIN_CONDITION_COUNT; $i++) {
+                    $target_idx = $idx + ($base * $i);
+                    if ($target_idx < 0 || $elements[$target_idx] !== $s) {
+                        break 1;
+                    }
+                    $same_count++;
+
+                    $n = (int)substr($target_idx, -1);
+                    if ($n === self::BOARD_RANGE) {
+                        if ($base === -(self::BOARD_RANGE - 1) || $base === 1 || $base == self::BOARD_RANGE + 1) {
+                            break 1;
+                        }
+                    }
+
+                    if (($target_idx % self::BOARD_RANGE) === 0) {
+                        if ($base === -(self::BOARD_RANGE + 1) || $base === -1 || $base === self::BOARD_RANGE - 1) {
+                            break 1;
+                        }
+                    }
+                }
+
+                $round++;
+            }
+
+            if ($same_count >= self::WIN_CONDITION_COUNT) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public function judgement($stone, $elements): bool
     {
         $range = self::BOARD_RANGE ** 2;

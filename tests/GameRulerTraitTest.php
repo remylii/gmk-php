@@ -225,4 +225,9 @@ class GameRulerTraitTest extends TestCase
             [[95, 86, 77, 68, 59], 59]
         ];
     }
+
+    public function testJudge()
+    {
+        $this->fail();
+    }
 }
