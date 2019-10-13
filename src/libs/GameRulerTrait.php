@@ -53,7 +53,7 @@ trait GameRulerTrait
 
                 for ($i = 1; $i < self::WIN_CONDITION_COUNT; $i++) {
                     $target_idx = $idx + ($base * $i);
-                    if ($target_idx < 0 || $elements[$target_idx] !== $s) {
+                    if ($target_idx < 0 || $target_idx >= (self::BOARD_RANGE ** 2) || $elements[$target_idx] !== $s) {
                         break 1;
                     }
                     $same_count++;
