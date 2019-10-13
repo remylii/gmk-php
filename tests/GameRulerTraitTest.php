@@ -226,8 +226,28 @@ class GameRulerTraitTest extends TestCase
         ];
     }
 
+    /**
+     * @group hoge
+     */
     public function testJudge()
     {
-        $this->fail();
+        $board_range = 10;
+        $params = [
+            [1, 0],
+            [2, 0],
+            [3, 0],
+            [4, 0],
+            [5, 0],
+        ];
+
+        $stone = 'x';
+        $board = new Board($board_range);
+        foreach ($params as $key => $param) {
+            $board->put($stone, $param[0], $param[1]);
+            $idx = $param[1] + ($param[0] * $board_range);
+
+            $expect = ($key == (count($params) - 1)) ? true : false;
+            $this->assertSame($expect, $this->ruler->judge($idx, $board->getData()));
+        }
     }
 }
